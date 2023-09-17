@@ -3,15 +3,30 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "Robot.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
-void Robot::RobotInit() {}
+void Robot::RobotInit()
+{
+    try
+    {
+        m_navx = new AHRS(frc::SerialPort::Port::kMXP);
+    }
+    catch (const std::exception &e)
+    {
+    }
+}
 void Robot::RobotPeriodic() {}
 
 void Robot::AutonomousInit() {}
 void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {}
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic()
+{
+    m_swerve.periodic();
+    m_swerve.driveRobot(m_joystickSpeed.GetX(), -m_joystickSpeed.GetY(), m_joystickSpin.GetX());
+    m_swerve.setrot(m_navx->GetYaw());
+}
 
 void Robot::DisabledInit() {}
 void Robot::DisabledPeriodic() {}
@@ -23,7 +38,8 @@ void Robot::SimulationInit() {}
 void Robot::SimulationPeriodic() {}
 
 #ifndef RUNNING_FRC_TESTS
-int main() {
-  return frc::StartRobot<Robot>();
+int main()
+{
+    return frc::StartRobot<Robot>();
 }
 #endif

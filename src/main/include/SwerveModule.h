@@ -1,15 +1,18 @@
 #pragma once
-#include <ctre/Phoenix.h>
 #include <cmath>
+#include <ctre/Phoenix.h>
 
-class SwerveModule{
-  public:
-    SwerveModule(int driveID, int turnID, int encoderID);
-    void driveGO(double angle, double voltage);
+class SwerveModule
+{
+public:
+    SwerveModule(int driveID, int turnID, int encoderID, std::string pos);
+    void driveAt(double angle, double voltage);
     void periodic();
-  private:
+
+private:
     WPI_TalonFX m_rotate;
     WPI_TalonFX m_speed;
     WPI_CANCoder m_encoder;
-    double currentangle;
+    double m_currentangle;
+    std::string pos;
 };

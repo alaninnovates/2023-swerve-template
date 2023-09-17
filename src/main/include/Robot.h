@@ -9,24 +9,30 @@
 #include "SwerveDrive.h"
 #include "AHRS.h"
 
-class Robot : public frc::TimedRobot {
- public:
-  void RobotInit() override;
-  void RobotPeriodic() override;
+class Robot : public frc::TimedRobot
+{
+public:
+    void RobotInit() override;
+    void RobotPeriodic() override;
 
-  void AutonomousInit() override;
-  void AutonomousPeriodic() override;
+    void AutonomousInit() override;
+    void AutonomousPeriodic() override;
 
-  void TeleopInit() override;
-  void TeleopPeriodic() override;
+    void TeleopInit() override;
+    void TeleopPeriodic() override;
 
-  void DisabledInit() override;
-  void DisabledPeriodic() override;
+    void DisabledInit() override;
+    void DisabledPeriodic() override;
 
-  void TestInit() override;
-  void TestPeriodic() override;
+    void TestInit() override;
+    void TestPeriodic() override;
 
-  void SimulationInit() override;
-  void SimulationPeriodic() override;
+    void SimulationInit() override;
+    void SimulationPeriodic() override;
 
+private:
+    frc::Joystick m_joystickSpeed{0};
+    frc::Joystick m_joystickSpin{1};
+    SwerveDrive m_swerve;
+    AHRS *m_navx;
 };
