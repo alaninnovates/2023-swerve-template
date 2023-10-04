@@ -15,7 +15,11 @@ void Robot::RobotInit()
     {
     }
 }
-void Robot::RobotPeriodic() {}
+void Robot::RobotPeriodic()
+{
+    // log encoders
+    m_swerve.periodic();
+}
 
 void Robot::AutonomousInit() {}
 void Robot::AutonomousPeriodic() {}
@@ -23,7 +27,6 @@ void Robot::AutonomousPeriodic() {}
 void Robot::TeleopInit() {}
 void Robot::TeleopPeriodic()
 {
-    m_swerve.periodic();
     m_swerve.driveRobot(m_joystickSpeed.GetX(), -m_joystickSpeed.GetY(), m_joystickSpin.GetX());
     m_swerve.setrot(m_navx->GetYaw());
 }

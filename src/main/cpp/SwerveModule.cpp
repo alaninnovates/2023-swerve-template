@@ -1,8 +1,8 @@
 #include "SwerveModule.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
-SwerveModule::SwerveModule(int driveID, int turnID, int encoderID, std::string pos)
-    : m_rotate{turnID, "drivebase"}, m_speed{driveID, "drivebase"}, m_encoder{encoderID, "drivebase"}, pos{pos}
+SwerveModule::SwerveModule(int driveID, int turnID, int encoderID, std::string pos, double offset)
+    : m_rotate{turnID, "drivebase"}, m_speed{driveID, "drivebase"}, m_encoder{encoderID, "drivebase"}, m_wheelName{pos}, m_offset{offset}
 {
     m_encoder.ConfigAbsoluteSensorRange(Signed_PlusMinus180);
 };
@@ -19,8 +19,8 @@ void SwerveModule::driveAt(double angle, double voltage)
         voltage = 5;
     }
     m_speed.SetVoltage(units::volt_t{voltage});
-    double error = angle - m_currentangle;
-    frc::SmartDashboard::PutNumber(pos + " error", error);
+    double error = angle - m_currentAngle;
+    frc::SmartDashboard::PutNumber(m_wheelName + " error", error);
     if (error > 180)
     {
         error = -(error - 180);
@@ -36,6 +36,7 @@ void SwerveModule::driveAt(double angle, double voltage)
 
 void SwerveModule::periodic()
 {
-    m_currentangle = m_encoder.GetAbsolutePosition();
-    frc::SmartDashboard::PutNumber(pos + " encoder angle", m_currentangle);
+    m_currentAngle = m_encoder.GetAbsolutePosition();
+    m_currentAngle += m_offset;
+    frc::SmartDashboard::PutNumber(m_wheelName + " encoder angle", m_currentAngle);
 }

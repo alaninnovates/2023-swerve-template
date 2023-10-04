@@ -28,9 +28,10 @@ private:
         }
     };
     vector calculate(double xvel, double yvel, double rotspeed, int a, int b);
-    double m_currentangle;
-    SwerveModule m_moduleFR{frDM, frTM, frENC, "FR"};
-    SwerveModule m_moduleBR{brDM, brTM, brENC, "BR"};
-    SwerveModule m_moduleFL{flDM, flTM, flENC, "FL"};
-    SwerveModule m_moduleBL{blDM, blTM, blENC, "BL"};
+    double m_currentAngle;
+    double m_targetAngle;
+    SwerveModule m_moduleFR{frDM, frTM, frENC, "FR", frOffset};
+    SwerveModule m_moduleBR{brDM, brTM, brENC, "BR", brOffset};
+    SwerveModule m_moduleFL{flDM, flTM, flENC, "FL", flOffset};
+    SwerveModule m_moduleBL{blDM, blTM, blENC, "BL", blOffset};
 };

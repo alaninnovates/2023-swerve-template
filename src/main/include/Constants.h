@@ -20,22 +20,23 @@
 // const int blENC = 8;
 // // const double blOffset = todo
 
+// for the robot with the red bumper thingy
 const int frDM = 4;
 const int frTM = 10;
 const int frENC = 8;
-// const double frOffset = todo;
+const double frOffset = 0;
 
 const int flDM = 23;
 const int flTM = 5;
 const int flENC = 2;
-// const double flOffset = todo;
+const double flOffset = 0;
 
 const int brDM = 1;
 const int brTM = 7;
 const int brENC = 9;
-// const double brOffset = todo;
+const double brOffset = 0;
 
 const int blDM = 22;
 const int blTM = 19;
 const int blENC = 6;
-// const double blOffset = todo
+const double blOffset = 0;

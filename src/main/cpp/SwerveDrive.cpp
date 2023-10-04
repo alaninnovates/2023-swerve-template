@@ -41,6 +41,8 @@ void SwerveDrive::driveRobot(double x, double y, double rot)
     vector bl = calculate(x, y, rot, 1, -1);
     bl.log("BL");
     m_moduleBL.driveAt(bl.angle, bl.magnitude);
+
+    m_targetAngle = atan2(y, x) * 180 / M_PI;
 }
 
 /**
@@ -53,10 +55,7 @@ void SwerveDrive::driveRobot(double x, double y, double rot)
  */
 SwerveDrive::vector SwerveDrive::calculate(double x, double y, double rot, int a, int b)
 {
-    // field orient
-    // x = x * cos(m_currentangle) - y * sin(m_currentangle);
-    // y = x * sin(m_currentangle) + y * cos(m_currentangle);
-
+    // todo:field orient
     double x_mag = x + rot * a;
     double y_mag = y + rot * b;
     double mag = hypot(x_mag, y_mag);
@@ -71,16 +70,22 @@ void SwerveDrive::periodic()
     m_moduleBR.periodic();
     m_moduleFL.periodic();
     m_moduleFR.periodic();
+    // drift correction
+    if (m_currentAngle != m_targetAngle)
+    {
+        double diff = m_targetAngle - m_currentAngle;
+        driveRobot(0, 0, diff * 0.01);
+    }
 }
 
 void SwerveDrive::setrot(double angle)
 {
-    m_currentangle = angle;
-    frc::SmartDashboard::PutNumber("Robot Angle", m_currentangle);
+    m_currentAngle = angle;
+    frc::SmartDashboard::PutNumber("Robot Angle", m_currentAngle);
 }
 
 void SwerveDrive::reset()
 {
-    m_currentangle = 0;
-    frc::SmartDashboard::PutNumber("Robot Angle", m_currentangle);
+    m_currentAngle = 0;
+    frc::SmartDashboard::PutNumber("Robot Angle", m_currentAngle);
 }
