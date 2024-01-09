@@ -29,7 +29,7 @@ void SwerveModule::driveAt(double angle, double voltage)
     {
         error = -(error + 180);
     }
-    double kP = 0.01;
+    double kP = 0.03;
     double turn = kP * error;
     m_rotate.SetVoltage(units::volt_t{turn});
 }

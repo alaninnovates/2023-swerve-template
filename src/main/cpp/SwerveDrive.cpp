@@ -1,7 +1,7 @@
 #include "SwerveDrive.h"
 #include <cmath>
 
-const int DEADBAND = 0.1;
+const double DEADBAND = 0.1;
 
 /**
  * 🚗 robot go brr but like it controls all the modules
@@ -26,19 +26,23 @@ void SwerveDrive::driveRobot(double x, double y, double rot)
     {
         rot = 0;
     }
-    vector fr = calculate(x, y, rot, -1, 1);
+    // frc::SmartDashboard::PutNumber("Joy2 Rot abs", std::abs(rot));
+    frc::SmartDashboard::PutNumber("Joy1 X after", x);
+    frc::SmartDashboard::PutNumber("Joy1 Y after", y);
+    frc::SmartDashboard::PutNumber("Joy2 Rot after", rot);
+    vector fr = calculate(x, y, rot, 1, -1);
     fr.log("FR");
     m_moduleFR.driveAt(fr.angle, fr.magnitude);
-
-    vector br = calculate(x, y, rot, 1, 1);
-    br.log("BR");
-    m_moduleBR.driveAt(br.angle, br.magnitude);
 
     vector fl = calculate(x, y, rot, -1, -1);
     fl.log("FL");
     m_moduleFL.driveAt(fl.angle, fl.magnitude);
 
-    vector bl = calculate(x, y, rot, 1, -1);
+    vector br = calculate(x, y, rot, 1, 1);
+    br.log("BR");
+    m_moduleBR.driveAt(br.angle, br.magnitude);
+
+    vector bl = calculate(x, y, rot, -1, 1);
     bl.log("BL");
     m_moduleBL.driveAt(bl.angle, bl.magnitude);
 
@@ -56,8 +60,9 @@ void SwerveDrive::driveRobot(double x, double y, double rot)
 SwerveDrive::vector SwerveDrive::calculate(double x, double y, double rot, int a, int b)
 {
     // todo:field orient
-    double x_mag = x + rot * a;
-    double y_mag = y + rot * b;
+    double x_mag = 6 * (x + rot * a);
+    double y_mag = 6 * (y + rot * b);
+
     double mag = hypot(x_mag, y_mag);
     double angle = atan2(y_mag, x_mag);
     angle = angle * 180 / M_PI;
@@ -71,11 +76,11 @@ void SwerveDrive::periodic()
     m_moduleFL.periodic();
     m_moduleFR.periodic();
     // drift correction
-    if (m_currentAngle != m_targetAngle)
-    {
-        double diff = m_targetAngle - m_currentAngle;
-        driveRobot(0, 0, diff * 0.01);
-    }
+    // if (m_currentAngle != m_targetAngle)
+    // {
+    //     double diff = m_targetAngle - m_currentAngle;
+    //     driveRobot(0, 0, diff * 0.01);
+    // }
 }
 
 void SwerveDrive::setrot(double angle)
