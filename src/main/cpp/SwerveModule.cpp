@@ -1,5 +1,4 @@
 #include "SwerveModule.h"
-#include <frc/smartdashboard/SmartDashboard.h>
 
 SwerveModule::SwerveModule(int driveID, int turnID, int encoderID, std::string pos, double offset)
     : m_rotate{turnID, "drivebase"}, m_speed{driveID, "drivebase"}, m_encoder{encoderID, "drivebase"}, m_wheelName{pos}, m_offset{offset}
@@ -20,7 +19,7 @@ void SwerveModule::driveAt(double angle, double voltage)
     }
     m_speed.SetVoltage(units::volt_t{voltage});
     double error = angle - m_currentAngle;
-    frc::SmartDashboard::PutNumber(m_wheelName + " error", error);
+    m_layout.Add("Error", error);
     if (error > 180)
     {
         error = -(error - 180);
@@ -38,5 +37,5 @@ void SwerveModule::periodic()
 {
     m_currentAngle = m_encoder.GetAbsolutePosition();
     m_currentAngle += m_offset;
-    frc::SmartDashboard::PutNumber(m_wheelName + " encoder angle", m_currentAngle);
+    m_layout.Add("Encoder Angle", m_currentAngle);
 }

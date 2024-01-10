@@ -1,6 +1,7 @@
 #pragma once
 #include <cmath>
 #include <ctre/Phoenix.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 class SwerveModule
 {
@@ -16,4 +17,6 @@ private:
     double m_currentAngle;
     double m_offset;
     std::string m_wheelName;
+    frc::ShuffleboardTab &m_tab = frc::Shuffleboard::GetTab("Drivebase");
+    frc::ShuffleboardLayout &m_layout = m_tab.GetLayout(m_wheelName + " Module", frc::BuiltInLayouts::kList);
 };
