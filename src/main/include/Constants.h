@@ -24,19 +24,19 @@
 const int frDM = 4;
 const int frTM = 10;
 const int frENC = 8;
-const double frOffset = 50;
+const double frOffset = 7;
 
 const int flDM = 23;
 const int flTM = 5;
 const int flENC = 2;
-const double flOffset = 45;
+const double flOffset = 8;
 
 const int brDM = 1;
 const int brTM = 7;
 const int brENC = 9;
-const double brOffset = 30;
+const double brOffset = 31;
 
 const int blDM = 22;
 const int blTM = 19;
 const int blENC = 6;
-const double blOffset = -22;
+const double blOffset = 85;

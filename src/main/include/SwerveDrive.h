@@ -25,10 +25,10 @@ private:
     vector calculate(double xvel, double yvel, double rotspeed, int a, int b);
     double m_currentAngle;
     double m_targetAngle;
-    SwerveModule m_moduleFR{frDM, frTM, frENC, "FR", frOffset, 0.025, 0, 0};
-    SwerveModule m_moduleBR{brDM, brTM, brENC, "BR", brOffset, 0.025, 0, 0};
-    SwerveModule m_moduleFL{flDM, flTM, flENC, "FL", flOffset, 0.025, 0, 0};
-    SwerveModule m_moduleBL{blDM, blTM, blENC, "BL", blOffset, 0.025, 0, 0};
+    SwerveModule m_moduleFR{frDM, frTM, frENC, "FR", frOffset, 0.03, 0.05, 0};
+    SwerveModule m_moduleBR{brDM, brTM, brENC, "BR", brOffset, 0.03, 0.05, 0};
+    SwerveModule m_moduleFL{flDM, flTM, flENC, "FL", flOffset, 0.03, 0.05, 0};
+    SwerveModule m_moduleBL{blDM, blTM, blENC, "BL", blOffset, 0.03, 0.05, 0};
     frc::ShuffleboardTab *tab = &frc::Shuffleboard::GetTab("Drivebase");
     frc::ShuffleboardLayout *m_shuffJoystick = &tab->GetLayout("Joystick", frc::BuiltInLayouts::kList).WithPosition(2, 0).WithSize(2, 3);
     nt::GenericEntry *m_shuffJoyX = m_shuffJoystick->Add("Joy1 X", 0).GetEntry();

@@ -3,6 +3,7 @@ class PID
 public:
     PID(double kP, double kI, double kD);
     double calculate(double error);
+    void setValues(double kP, double kI, double kD);
     void reset();
 
 private:

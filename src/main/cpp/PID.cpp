@@ -17,6 +17,13 @@ double PID::calculate(double error)
     return output;
 }
 
+void PID::setValues(double kP, double kI, double kD)
+{
+    m_kP = kP;
+    m_kI = kI;
+    m_kD = kD;
+}
+
 void PID::reset()
 {
     m_error = 0;

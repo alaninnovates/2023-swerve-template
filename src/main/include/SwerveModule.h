@@ -44,4 +44,5 @@ private:
                                                   .WithPosition(2, 0)
                                                   .GetEntry();
     nt::GenericEntry *m_shuffOverrideEnabled = layout->Add("[DBG] Override Enabled", false).WithWidget(frc::BuiltInWidgets::kToggleButton).WithPosition(0, 0).GetEntry();
+    nt::GenericEntry *m_kP, *m_kI, *m_kD;
 };
