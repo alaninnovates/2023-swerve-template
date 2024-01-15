@@ -32,6 +32,9 @@
     "transitory": {
       "Shuffleboard": {
         ".metadata": {
+          "Drivebase": {
+            "open": true
+          },
           "open": true
         }
       }
