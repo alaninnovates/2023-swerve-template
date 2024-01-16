@@ -17,6 +17,7 @@ private:
     WPI_TalonFX m_speed;
     WPI_CANCoder m_encoder;
     double m_currentAngle;
+    double m_prevAngle;
     double m_offset;
     std::string m_wheelName;
     PID m_pid;

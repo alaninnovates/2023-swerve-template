@@ -3,16 +3,10 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 SwerveModule::SwerveModule(int driveID, int turnID, int encoderID, std::string pos, double offset, double kP, double kI, double kD)
-    : m_rotate{turnID, "drivebase"}, m_speed{driveID, "drivebase"}, m_encoder{encoderID, "drivebase"}, m_wheelName{pos}, m_offset{offset}, m_pid{PID{kP, kI, kD}}
+    : m_rotate{turnID, "drivebase"}, m_speed{driveID, "drivebase"}, m_encoder{encoderID, "drivebase"}, m_wheelName{pos}, m_offset{offset}, m_pid{kP, kI, kD}
 {
     m_encoder.ConfigAbsoluteSensorRange(Signed_PlusMinus180);
-    if (pos == "FR")
-    {
-        frc::ShuffleboardTab *m_tab = &frc::Shuffleboard::GetTab("Drivebase");
-        m_kP = m_tab->Add("kP", 0).GetEntry();
-        m_kI = m_tab->Add("kI", 0).GetEntry();
-        m_kD = m_tab->Add("kD", 0).GetEntry();
-    }
+    // m_rotate.SetNeutralMode(NeutralMode::Brake);
 };
 
 /**
@@ -22,24 +16,41 @@ SwerveModule::SwerveModule(int driveID, int turnID, int encoderID, std::string p
  */
 void SwerveModule::driveAt(double angle, double voltage)
 {
+    frc::SmartDashboard::PutNumber(m_wheelName + " Target Angle", angle);
+    if (angle == 0)
+    {
+        angle = m_prevAngle;
+    }
+    else
+    {
+        m_prevAngle = angle;
+    }
     if (abs(voltage) > 5)
     {
         voltage = 5;
     }
-    m_speed.SetVoltage(units::volt_t{voltage});
     double error = fmod(angle - m_currentAngle, 360);
-    m_shuffError->SetDouble(error);
+    // m_shuffError->SetDouble(error);
     frc::SmartDashboard::PutNumber(m_wheelName + " Error", error);
     if (error > 180)
     {
-        error = -(error - 180);
+        error = -(360 - error);
     }
-    if (error < -180)
+    else if (error < -180)
     {
-        error = -(error + 180);
+        error = 360 + error;
     }
-    double turn = m_pid.calculate(error);
-    m_rotate.SetVoltage(units::volt_t{turn});
+    // if the target angle is the opposite of the current angle (m_currentAngle)
+    if (abs(m_currentAngle - m_prevAngle) == 180)
+    {
+        voltage *= -1;
+    }
+    else
+    {
+        double turn = m_pid.calculate(error);
+        m_rotate.SetVoltage(units::volt_t{turn});
+    }
+    m_speed.SetVoltage(units::volt_t{voltage});
 }
 
 void SwerveModule::periodic()

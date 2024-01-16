@@ -26,16 +26,16 @@ void SwerveDrive::driveRobot(double x, double y, double rot)
     {
         rot = 0;
     }
-    vector fr = calculate(x, y, rot, -1, 1);
+    vector fr = calculate(x, y, rot, -1, -1);
     m_moduleFR.driveAt(fr.angle, fr.magnitude);
 
-    vector fl = calculate(x, y, rot, -1, -1);
+    vector fl = calculate(x, y, rot, -1, 1);
     m_moduleFL.driveAt(fl.angle, fl.magnitude);
 
-    vector br = calculate(x, y, rot, 1, 1);
+    vector br = calculate(x, y, rot, 1, -1);
     m_moduleBR.driveAt(br.angle, br.magnitude);
 
-    vector bl = calculate(x, y, rot, 1, -1);
+    vector bl = calculate(x, y, rot, 1, 1);
     m_moduleBL.driveAt(bl.angle, bl.magnitude);
 
     m_targetAngle = atan2(y, x) * 180 / M_PI;
