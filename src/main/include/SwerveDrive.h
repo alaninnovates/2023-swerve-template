@@ -13,7 +13,7 @@ class SwerveDrive
 public:
     void driveRobot(double xval, double yvel, double rotspeed);
     void reset();
-    void setrot(double angle);
+    void setRot(double angle);
     void periodic();
 
 private:

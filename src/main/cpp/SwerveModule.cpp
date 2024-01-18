@@ -9,8 +9,29 @@ SwerveModule::SwerveModule(int driveID, int turnID, int encoderID, std::string p
     // m_rotate.SetNeutralMode(NeutralMode::Brake);
 };
 
+double SwerveModule::optimizeRotation(double angle)
+{
+    if (angle > 180)
+    {
+        angle = -(360 - angle);
+    }
+    else if (angle < -180)
+    {
+        angle = 360 + angle;
+    }
+    return angle;
+}
+
 /**
- * Robot actually go brr 🚗
+ * Returns the optimal degres required to get to a target
+ */
+double SwerveModule::angleToTarget(double targetAngle)
+{
+    return optimizeRotation(targetAngle - m_currentAngle);
+}
+
+/**
+ * Drive a swerve module
  * @param angle angle to turn to
  * @param voltage voltage to drive at
  */
@@ -29,39 +50,28 @@ void SwerveModule::driveAt(double angle, double voltage)
     {
         voltage = 5;
     }
-    double error = fmod(angle - m_currentAngle, 360);
-    // m_shuffError->SetDouble(error);
-    frc::SmartDashboard::PutNumber(m_wheelName + " Error", error);
-    if (error > 180)
+    double angle_by_rotation = angleToTarget(angle);
+    frc::SmartDashboard::PutNumber(m_wheelName + " Error", angle_by_rotation);
+    double angle_to_parallel = angleToTarget(angle - 180);
+    // if it takes less rotation to get parallel to the target angle than rotating fully
+    // flip the drive voltage to go in the opposite way
+    if (abs(angle_to_parallel) < abs(angle_by_rotation))
     {
-        error = -(360 - error);
-    }
-    else if (error < -180)
-    {
-        error = 360 + error;
-    }
-    // if the target angle is the opposite of the current angle (m_currentAngle)
-    if (abs(m_currentAngle - m_prevAngle) == 180)
-    {
-        voltage *= -1;
+        double turn = m_pid.calculate(angle_to_parallel);
+        m_rotate.SetVoltage(units::volt_t{turn});
+        m_speed.SetVoltage(units::volt_t{-voltage});
     }
     else
     {
-        double turn = m_pid.calculate(error);
+        double turn = m_pid.calculate(angle_by_rotation);
         m_rotate.SetVoltage(units::volt_t{turn});
+        m_speed.SetVoltage(units::volt_t{voltage});
     }
-    m_speed.SetVoltage(units::volt_t{voltage});
 }
 
 void SwerveModule::periodic()
 {
     m_currentAngle = m_encoder.GetAbsolutePosition();
     m_currentAngle -= m_offset;
-    // m_shuffEncoderAngle->SetDouble(m_currentAngle);
     frc::SmartDashboard::PutNumber(m_wheelName + " Angle", m_currentAngle);
-    // if (m_wheelName == "FR")
-    // {
-    //     std::cout << "pid: " << m_kP->GetDouble(0) << " " << m_kI->GetDouble(0) << " " << m_kP->GetDouble(0);
-    //     m_pid.setValues(m_kP->GetDouble(0), m_kI->GetDouble(0), m_kP->GetDouble(0));
-    // }
 }

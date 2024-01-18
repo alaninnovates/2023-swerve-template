@@ -29,10 +29,10 @@ void SwerveDrive::driveRobot(double x, double y, double rot)
     vector fr = calculate(x, y, rot, -1, -1);
     m_moduleFR.driveAt(fr.angle, fr.magnitude);
 
-    vector fl = calculate(x, y, rot, -1, 1);
+    vector fl = calculate(x, y, -rot, -1, 1);
     m_moduleFL.driveAt(fl.angle, fl.magnitude);
 
-    vector br = calculate(x, y, rot, 1, -1);
+    vector br = calculate(x, y, -rot, 1, -1);
     m_moduleBR.driveAt(br.angle, br.magnitude);
 
     vector bl = calculate(x, y, rot, 1, 1);
@@ -75,7 +75,7 @@ void SwerveDrive::periodic()
     // }
 }
 
-void SwerveDrive::setrot(double angle)
+void SwerveDrive::setRot(double angle)
 {
     m_currentAngle = angle;
     m_shuffRobotAngle->SetDouble(m_currentAngle);
